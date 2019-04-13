@@ -1,0 +1,7 @@
+language: csharp
+solution: UnitTestHelperLibrary.sln
+install:
+  - nuget restore UnitTestHelperLibrary.sln
+script:
+  - msbuild /p:Configuration=Release UnitTestHelperLibrary.sln
+  
