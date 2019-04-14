@@ -45,8 +45,59 @@ The UnitTestHelpers.CreateAllTables method can be used to create all tables in y
 
 Run the generator against your database and a collection of cs files will be created.  You can dump that directory into your test directory and use the code directly from there.  This code does not get deployed.
 
+Inside each unit test class you create in your project, you'll need to do a cleanup.  Add this method:
+
+```C#
+[TestCleanup]
+public void Cleanup()
+{
+	UnitTestHelpers.TruncateData();
+}
+```
+
+This will cause all of your data to be cleaned out of your database before the next test is run.
 
 # Using XML Data to Seed Your Unit Test
 
+If you want to seed your data automatically, you can dump some data into an xml file that this utility can read and insert all at once.  You can seed all of your tables at one time and save a lot of unit testing code.  First, you have to get an xml copy of some data.  You can create a query against your test database and have SQL Server spit out the xml that you'll need.  After this query, you can manually modify the xml data as desired to setup edge-case tests.  First, here is a sample query that you can use on MS SQL:
 
+```SQL
+select * from employee for xml raw ('employee')
+```
+
+This will select all records in a table called employee.  That data will go into an xml block like this:
+
+```xml
+<employee ID="1" FirstName="Joe" LastName="Cool" Department="1" />
+<employee ID="2" FirstName="Jane" LastName="Whipple" Department="2" />
+<employee ID="3" FirstName="Mark" LastName="Delaney" Department="2" />
+<employee ID="4" FirstName="Sue" LastName="Smith" Department="3" />
+```
+
+In order to use this with your unit tests, you'll need to create an xml file in your unit test project.  I usually create a TestData directory to contain all of these files.  Once you create an empty xml file, you will need to change the Build Action in the file properties in Visual Studio to "Embedded".  This will cause the xml file to be compiled into the help project dll.  This feature will save a lot of time when setting up a build server, since there are no extra file paths to worry about.
+
+The above snippet of xml is not valid for use in an xml file yet.  You must first setup the file to look like this:
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<databases>
+  <database name="Linq2SqlDemoData">
+
+  </database>
+</databases>
+```
+
+You can include multiple databases in your xml file if you want to seed more than one database.  Inside the database tag, you paste rows of table data that will be inserted into that database.  That's where you'll paste the output obtained from MS SQL server to form an xml file like this:
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<databases>
+  <database name="Linq2SqlDemoData">
+    <employee ID="1" FirstName="Joe" LastName="Cool" Department="1" />
+    <employee ID="2" FirstName="Jane" LastName="Whipple" Department="2" />
+    <employee ID="3" FirstName="Mark" LastName="Delaney" Department="2" />
+    <employee ID="4" FirstName="Sue" LastName="Smith" Department="3" />
+  </database>
+</databases>
+```
 
