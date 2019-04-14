@@ -27,14 +27,17 @@ namespace UnitTestHelperLibrary
         public static void Start(string instanceName, string[] databaseList)
         {
             _databaseList = databaseList;
-            InstanceName = instanceName;
+
+            // make sure the instance name is unique.  This will allow unit tests to be run for two or more projects on a 
+            // machine (like the build server).
+            InstanceName = instanceName + Guid.NewGuid().ToString().Replace("-", "");
 
             // make sure any previous instances are shut down
             var startInfo = new ProcessStartInfo
             {
                 WindowStyle = ProcessWindowStyle.Hidden,
                 FileName = "cmd.exe",
-                Arguments = "/c sqllocaldb stop \"" + instanceName + "\""
+                Arguments = "/c sqllocaldb stop \"" + InstanceName + "\""
             };
 
             var process = new Process { StartInfo = startInfo };
@@ -42,7 +45,7 @@ namespace UnitTestHelperLibrary
             process.WaitForExit();
 
             // delete any previous instance
-            startInfo.Arguments = "/c sqllocaldb delete \"" + instanceName + "\"";
+            startInfo.Arguments = "/c sqllocaldb delete \"" + InstanceName + "\"";
             process.Start();
             process.WaitForExit();
 
@@ -57,7 +60,7 @@ namespace UnitTestHelperLibrary
             {
                 WindowStyle = ProcessWindowStyle.Hidden,
                 FileName = "cmd.exe",
-                Arguments = "/c sqllocaldb create \"" + instanceName + "\" -s"
+                Arguments = "/c sqllocaldb create \"" + InstanceName + "\" -s"
             };
 
             process = new Process { StartInfo = startInfo };

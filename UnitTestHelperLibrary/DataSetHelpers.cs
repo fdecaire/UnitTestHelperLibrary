@@ -14,27 +14,24 @@ namespace UnitTestHelperLibrary
             };
             dataTable.Columns.Add(dataColumn);
         }
-        public static object ConvertToDBNullDate(this string dateTimeString)
+
+        public static object ConvertToDbNullDate(this string dateTimeString)
         {
-            if (!string.IsNullOrEmpty(dateTimeString))
+            if (string.IsNullOrEmpty(dateTimeString)) return DBNull.Value;
+            if (DateTime.TryParse(dateTimeString, out var tempDate))
             {
-                if (DateTime.TryParse(dateTimeString, out var tempDate))
-                {
-                    return tempDate;
-                }
+                return tempDate;
             }
 
             return DBNull.Value;
         }
 
-        public static object ConvertToDBNullDouble(this string doubleString)
+        public static object ConvertToDbNullDouble(this string doubleString)
         {
-            if (!string.IsNullOrEmpty(doubleString))
+            if (string.IsNullOrEmpty(doubleString)) return DBNull.Value;
+            if (double.TryParse(doubleString, out var tempDouble))
             {
-                if (double.TryParse(doubleString, out var tempDouble))
-                {
-                    return tempDouble;
-                }
+                return tempDouble;
             }
 
             return DBNull.Value;
@@ -45,7 +42,7 @@ namespace UnitTestHelperLibrary
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static int? DBNullToInt(this object data)
+        public static int? DbNullToInt(this object data)
         {
             if (data != DBNull.Value)
             {
@@ -60,7 +57,7 @@ namespace UnitTestHelperLibrary
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static double? DBNullToDouble(this object data)
+        public static double? DbNullToDouble(this object data)
         {
             if (data != DBNull.Value)
             {
