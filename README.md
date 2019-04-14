@@ -8,4 +8,5 @@ https://www.nuget.org/packages/UnitTestHelperLibrary/
 
 Install-Package UnitTestHelperLibrary -Version 1.1.2
 
+Instructions on how to use this NuGet package are coming soon...
 
