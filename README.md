@@ -101,3 +101,58 @@ You can include multiple databases in your xml file if you want to seed more tha
 </databases>
 ```
 
+You can specify which schema your table is located in by adding a schema attribute to your database xml tag.  If your employee table was located inside a schema called "HR", then you can do this:
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<databases>
+  <database name="Linq2SqlDemoData" schema="HR">
+    <employee ID="1" FirstName="Joe" LastName="Cool" Department="1" />
+    <employee ID="2" FirstName="Jane" LastName="Whipple" Department="2" />
+    <employee ID="3" FirstName="Mark" LastName="Delaney" Department="2" />
+    <employee ID="4" FirstName="Sue" LastName="Smith" Department="3" />
+  </database>
+</databases>
+```
+
+To load your xml data into the database before executing a test, you can run the UnitTestHelpers.ReadData method.  Since the xml file is embedded, you'll need to include a full namespace path to your file like this:
+
+```text
+UnitTestHelpers.ReadData("SampleLinq2SqlUnitTesting.Tests.TestData.DefaultData.xml");
+```
+
+The namespace for the above sample is "SampleLinq2SqlUnitTesting.Tests".  The directory that the file is in is "TestData" and the filename is "DefaultData.xml".
+
+Once you run the LoadData method, you can create an instance of your class and run your method that you wish to test.  To make this work right, you'll need to include the UnitTestHelperLibrary in your repository and use the UnitTestHelpers.IsInUnitTest boolean flag in your context to determine if the database is being run from a unit test or your code.  If this flag is true, then a unit test is running your code and you must point your context to the (localdb)\{InstanceName} where "InstanceName" is contained in UnitTestHelpers.InstnaceName.  Make sure you properly test this on your development system before running any unit tests.  Your unit tests should never be deployed to your production system and they should never be run from your production system.  Here's an example of a database connection string class that I would use for Linq to SQL, EF or even ADO:
+
+```C#
+public static class DatabaseConnectionString
+{
+	public static string Get()
+	{
+		if (UnitTestHelpers.IsInUnitTest)
+		{
+			return "Data Source=(localdb)\\" + UnitTestHelpers.InstanceName + ";Initial Catalog=linq2sqldemodata;Integrated Security=True";
+		}
+
+		return ConfigurationManager.AppSettings["SampleLinq2SqlUnitTesting.Properties.Settings.linq2sqldemodataConnectionString"];
+	}
+}
+```
+
+Then use this syntax for connecting to your database in your code:
+
+```C#
+public class BusinessClass
+{
+	public List<string> GetAllEmployeeNames()
+	{
+		using (var db = new LinqDataClassesDataContext(DatabaseConnectionString.Get()))
+		{
+			var result = (from e in db.Employees select e.LastName + ", " + e.FirstName).ToList();
+
+			return result;
+		}
+	}
+}
+```
