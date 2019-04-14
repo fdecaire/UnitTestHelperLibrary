@@ -6,7 +6,7 @@
 NuGet Package:
 https://www.nuget.org/packages/UnitTestHelperLibrary/
 
-Install-Package UnitTestHelperLibrary -Version 1.1.3
+Install-Package UnitTestHelperLibrary -Version 1.1.4
 
 # How to Use this Package
 
