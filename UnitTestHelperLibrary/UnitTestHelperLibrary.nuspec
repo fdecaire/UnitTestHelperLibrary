@@ -2,15 +2,15 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>1.0.0.0</version>
+    <version>1.1.0.0</version>
     <title>Unit Test Helper Library</title>
     <authors>Frank DeCaire</authors>
     <owners>Frank DeCaire</owners>
     <projectUrl>https://github.com/fdecaire/UnitTestHelperLibrary</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This package contains a library of objects that can be used to create unit tests based on a SQLLocalDB instance.</description>
-    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <releaseNotes>Removed dependencies on other NuGet packages.</releaseNotes>
     <copyright>Copyright 2019</copyright>
-    <tags></tags>
+    <tags>Unit Test</tags>
   </metadata>
 </package>
