@@ -49,7 +49,7 @@ namespace UnitTestHelperLibrary
         {
             if (data != DBNull.Value)
             {
-                return data.ToString().ToInt();
+                return int.Parse(data.ToString());
             }
 
             return null;
@@ -64,7 +64,7 @@ namespace UnitTestHelperLibrary
         {
             if (data != DBNull.Value)
             {
-                return data.ToString().ToDouble();
+                return double.Parse(data.ToString());
             }
 
             return null;

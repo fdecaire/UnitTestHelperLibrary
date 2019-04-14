@@ -62,7 +62,6 @@
     <Compile Include="InsertQueryGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StoredProc.cs" />
-    <Compile Include="StringHelpers.cs" />
     <Compile Include="TableDefinition.cs" />
     <Compile Include="UnitTestHelpers.cs" />
     <Compile Include="ViewCreator.cs" />

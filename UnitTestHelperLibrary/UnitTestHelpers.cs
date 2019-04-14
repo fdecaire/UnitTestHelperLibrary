@@ -406,7 +406,7 @@ namespace UnitTestHelperLibrary
                 {
                     while (reader.Read())
                     {
-                        results = reader["total"].ToInt();
+                        results = int.Parse(reader["total"].ToString());
                         break;
                     }
                 }

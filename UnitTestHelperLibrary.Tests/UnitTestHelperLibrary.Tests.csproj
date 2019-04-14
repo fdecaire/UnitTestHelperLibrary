@@ -52,7 +52,6 @@
   <ItemGroup>
     <Compile Include="DataSetHelpersTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StringHelpersTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
