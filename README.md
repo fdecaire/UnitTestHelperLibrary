@@ -167,3 +167,6 @@ ExampleStoredProcedure.Instance.CreateStoredProcedure();
 
 This code should be contained in the [AssemblyInitialize] method inside the AssemblyCommon.cs source file.  That will cause the stored procedure to be created when the database and tables are created.  After the stored procedure is created, it can be used by any of your methods under test exactly as it is used in your real database.
 
+# Custom Queries
+
+You can create queries and save them inside of embedded files.  Each query can be separated by a "GO" just like SQL uses.  Once you provide an embedded file name, you can call the UnitTestHelpers.ExecuteSQLCode method to execute that set of queries.  This can be convenient for creating a fake stored procedure (one that does nothing but ruturn a fake set of data).  Then you run your test against that database and run a cleanup query when the test is done.
