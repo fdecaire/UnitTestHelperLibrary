@@ -156,3 +156,14 @@ public class BusinessClass
 	}
 }
 ```
+
+# Unit Testing a Stored Procedure
+
+When you generate code to create stored procedures, there will be an object for each stored procedure inside the data layer project.  The stored procedure object will contain an instance that has a create method.  Use the following syntax to create the stored procedure in your test database:
+
+```C#
+ExampleStoredProcedure.Instance.CreateStoredProcedure();
+```
+
+This code should be contained in the [AssemblyInitialize] method inside the AssemblyCommon.cs source file.  That will cause the stored procedure to be created when the database and tables are created.  After the stored procedure is created, it can be used by any of your methods under test exactly as it is used in your real database.
+
