@@ -37,7 +37,14 @@ public class AssemblyUnitTestShared
 }
 ```
 
-In the UnitTestHelpers.Start method the first parameter is a name you can use for your instance.  This will be appended with a GUID so it will end up being a unique name.  The only purpose this serves is so you can identify the file that is created on your hard drive if you want to manually cleanup failed runs (like on a build server).  The files are normally created in the 
+In the UnitTestHelpers.Start method the first parameter is a name you can use for your instance.  This will be appended with a GUID so it will end up being a unique name.  The only purpose this serves is so you can identify the file that is created on your hard drive if you want to manually cleanup failed runs (like on a build server).  The files are normally created in the "%userprofile%\AppData\Local\Microsoft\Microsoft SQL Server Local DB\Instances" directory.
+
+The second parameter in the UnitTestHelpers.Start method is an array of strings that represents all the databases you would like to create in your instance.  In the example above, there is only one database named Linq2SqlDemoData created in the instance.
+
+The UnitTestHelpers.CreateAllTables method can be used to create all tables in your database.  You can also provide a list of tables to provide manually.  In order to preform this step, you'll need to generate the C# code that you'll use to create tables, stored procedures, views, etc.  For that, you'll need to download the database generate application that is normally used with this unit testing package (download it from here https://github.com/fdecaire/UnitTestDatabaseGenerator).
+
+Run the generator against your database and a collection of cs files will be created.  You can dump that directory into your test directory and use the code directly from there.  This code does not get deployed.
+
 
 # Using XML Data to Seed Your Unit Test
 
