@@ -14,18 +14,14 @@ namespace UnitTestHelperLibrary
     {
         private static string[] _databaseList;
         public static string InstanceName { get; private set; }
+        public static string UnitTestProjectInstance { get; private set; }
 
-        public static bool IsInUnitTest
-        {
-            get
-            {
-                const string testAssemblyName = "Microsoft.VisualStudio.QualityTools.UnitTestFramework";
-                return AppDomain.CurrentDomain.GetAssemblies().Any(a => a.FullName.StartsWith(testAssemblyName));
-            }
-        }
+        public static bool IsInUnitTest => UnitTestProjectInstance == Assembly.GetExecutingAssembly().FullName;
 
         public static void Start(string instanceName, string[] databaseList)
         {
+            UnitTestProjectInstance = Assembly.GetExecutingAssembly().FullName;
+
             _databaseList = databaseList;
 
             // make sure the instance name is unique.  This will allow unit tests to be run for two or more projects on a 
