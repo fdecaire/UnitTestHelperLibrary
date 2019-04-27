@@ -472,9 +472,10 @@ namespace UnitTestHelperLibrary
         /// Execute any query against your SQLLocalDB instance.
         /// </summary>
         /// <param name="filePath">Full namespace path to the embedded resource file</param>
-        public static void ExecuteSQLCode(string filePath)
+        /// <param name="database"></param>
+        public static void ExecuteSQLCode(string filePath, string database)
         {
-            using (var db = new ADODatabaseContext("TEST"))
+            using (var db = new ADODatabaseContext("TEST", database))
             {
                 var assembly = Assembly.GetCallingAssembly();
                 using (var stream = assembly.GetManifestResourceStream(filePath))
@@ -488,7 +489,7 @@ namespace UnitTestHelperLibrary
                         {
                             if (tsqlCommand.Trim() != "")
                             {
-                                db.ExecuteNonQuery(tsqlCommand);
+                                db.ExecuteNonQuery(tsqlCommand.Replace("\n", "").Replace("\r", ""));
                             }
                         }
                     }
