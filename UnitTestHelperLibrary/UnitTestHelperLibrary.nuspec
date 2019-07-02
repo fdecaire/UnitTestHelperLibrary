@@ -2,14 +2,14 @@
 <package >
   <metadata>
     <id>UnitTestHelperLibrary</id>
-    <version>1.1.4.0</version>
+    <version>1.1.5.0</version>
     <title>Unit Test Helper Library</title>
     <authors>Frank DeCaire</authors>
     <owners>Frank DeCaire</owners>
     <projectUrl>https://github.com/fdecaire/UnitTestHelperLibrary</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This package contains a library of objects that can be used to create unit tests based on a SQLLocalDB instance.</description>
-    <releaseNotes>Added help annotations for public methods.  Fixed excluded pfx file for strongname.</releaseNotes>
+    <releaseNotes>Fixed a bug in the ExecuteSQLCode() method involving the database selector</releaseNotes>
     <copyright>Copyright 2019</copyright>
     <tags>Unit Test</tags>
   </metadata>
