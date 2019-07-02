@@ -140,7 +140,7 @@ namespace UnitTestHelperLibrary
                     // generate a table list
                     using (var reader = db.ReadQuery(@"
 						SELECT * 
-						FROM " + database + @".INFORMATION_SCHEMA.tables 
+						FROM [" + database + @"].INFORMATION_SCHEMA.tables 
 						WHERE TABLE_TYPE = 'BASE TABLE'
 						ORDER BY TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME"))
                     {
@@ -190,7 +190,7 @@ namespace UnitTestHelperLibrary
 
                         using (var dbExec = new ADODatabaseContext("TEST", database))
                         {
-                            var query = "ALTER TABLE " + database + "." + schemaName + "." + foreignKeyTableName + " DROP CONSTRAINT " + constraintName;
+                            var query = "ALTER TABLE [" + database + "].[" + schemaName + "].[" + foreignKeyTableName + "] DROP CONSTRAINT " + constraintName;
                             dbExec.ExecuteNonQuery(query);
                         }
                     }
