@@ -11,8 +11,8 @@ namespace UnitTestHelperLibrary
         private readonly string _connectionString;
         private readonly string _databaseName;
         private readonly string _schemaName;
-        private string _IdentityFieldName;
-        private bool _DataContainsPrimaryKey;
+        private string _identityFieldName;
+        private bool _dataContainsPrimaryKey;
 
         public InsertQueryGenerator(string connectionString, string databaseName, string schemaName)
         {
@@ -25,8 +25,8 @@ namespace UnitTestHelperLibrary
         {
             _tableName = e.Name;
 
-            _IdentityFieldName = ReadTableIdentityFieldName();
-            _DataContainsPrimaryKey = false;
+            _identityFieldName = ReadTableIdentityFieldName();
+            _dataContainsPrimaryKey = false;
 
             BuildFieldsForTable();
 
@@ -44,9 +44,9 @@ namespace UnitTestHelperLibrary
                     if (record == null) continue;
                     record.Value = fieldData;
 
-                    if (fieldName.ToLower() == _IdentityFieldName.ToLower())
+                    if (fieldName.ToLower() == _identityFieldName.ToLower())
                     {
-                        _DataContainsPrimaryKey = true;
+                        _dataContainsPrimaryKey = true;
                     }
                 }
             }
@@ -63,9 +63,9 @@ namespace UnitTestHelperLibrary
                     if (record == null) continue;
                     record.Value = fieldData;
 
-                    if (fieldName.ToLower() == _IdentityFieldName.ToLower())
+                    if (fieldName.ToLower() == _identityFieldName.ToLower())
                     {
-                        _DataContainsPrimaryKey = true;
+                        _dataContainsPrimaryKey = true;
                     }
                 }
             }
@@ -95,7 +95,7 @@ namespace UnitTestHelperLibrary
                 return;
             }
 
-            query = "INSERT INTO " + _databaseName + "." + _schemaName + "." + _tableName + " (" + query + ") VALUES (";
+            query = $"INSERT INTO [{_databaseName}].[{_schemaName}].[{_tableName}] ({query}) VALUES (";
 
             foreach (var field in Fields)
             {
@@ -114,14 +114,14 @@ namespace UnitTestHelperLibrary
 
             using (var db = new ADODatabaseContext(_connectionString))
             {
-                if (_DataContainsPrimaryKey)
+                if (_dataContainsPrimaryKey)
                 {
-                    db.ExecuteNonQuery("SET IDENTITY_INSERT " + _databaseName + "." + _schemaName + "." + _tableName + " ON");
+                    db.ExecuteNonQuery("SET IDENTITY_INSERT [" + _databaseName + "].[" + _schemaName + "].[" + _tableName + "] ON");
                 }
                 db.ExecuteNonQuery(query);
-                if (_DataContainsPrimaryKey)
+                if (_dataContainsPrimaryKey)
                 {
-                    db.ExecuteNonQuery("SET IDENTITY_INSERT " + _databaseName + "." + _schemaName + "." + _tableName + " OFF");
+                    db.ExecuteNonQuery("SET IDENTITY_INSERT [" + _databaseName + "].[" + _schemaName + "].[" + _tableName + "] OFF");
                 }
             }
         }
@@ -133,8 +133,8 @@ namespace UnitTestHelperLibrary
 
             foreach (var tableItem in jsonTableData.Value)
             {
-                _IdentityFieldName = ReadTableIdentityFieldName();
-                _DataContainsPrimaryKey = false;
+                _identityFieldName = ReadTableIdentityFieldName();
+                _dataContainsPrimaryKey = false;
 
                 BuildFieldsForTable();
 
@@ -147,9 +147,9 @@ namespace UnitTestHelperLibrary
                     if (record == null) continue;
                     record.Value = fieldData;
 
-                    if (fieldName.ToLower() == _IdentityFieldName.ToLower())
+                    if (fieldName.ToLower() == _identityFieldName.ToLower())
                     {
-                        _DataContainsPrimaryKey = true;
+                        _dataContainsPrimaryKey = true;
                     }
                 }
 
@@ -162,7 +162,7 @@ namespace UnitTestHelperLibrary
             Fields.Clear();
             using (var db = new ADODatabaseContext(_connectionString))
             {
-                var columnQuery = "SELECT * FROM " + _databaseName + ".INFORMATION_SCHEMA.columns WHERE TABLE_NAME='" + _tableName + "'";
+                var columnQuery = "SELECT * FROM [" + _databaseName + "].INFORMATION_SCHEMA.columns WHERE TABLE_NAME='" + _tableName + "'";
                 using (var reader = db.ReadQuery(columnQuery))
                 {
                     while (reader.Read())
@@ -180,8 +180,8 @@ namespace UnitTestHelperLibrary
         private string ReadTableIdentityFieldName()
         {
             var query = @"
-					SELECT * FROM " + _databaseName + @".sys.identity_columns AS a 
-					INNER JOIN " + _databaseName + @".sys.objects AS b ON a.object_id=b.object_id 
+					SELECT * FROM [" + _databaseName + @"].sys.identity_columns AS a 
+					INNER JOIN [" + _databaseName + @"].sys.objects AS b ON a.object_id=b.object_id 
 					WHERE 
 						LOWER(b.name)='" + _tableName + @"' AND 
 						type='U'";

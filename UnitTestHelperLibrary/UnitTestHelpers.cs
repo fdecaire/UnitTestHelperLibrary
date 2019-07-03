@@ -452,7 +452,7 @@ namespace UnitTestHelperLibrary
             // make sure the schema name doesn't already contain a "."
             schema = schema.Replace(".", "");
 
-            using (var db = new ADODatabaseContext("", schema + "." + database))
+            using (var db = new ADODatabaseContext("TEST", database))
             {
                 var query = "SELECT COUNT(*) AS total FROM " + tableName;
                 using (var reader = db.ReadQuery(query))
