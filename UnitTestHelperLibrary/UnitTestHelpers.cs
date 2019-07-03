@@ -149,7 +149,7 @@ namespace UnitTestHelperLibrary
                             var tableName = reader["table_name"].ToString();
                             var schemaName = reader["TABLE_SCHEMA"].ToString();
 
-                            tableList.Add(database + "." + schemaName + "." + tableName);
+                            tableList.Add($"[{database}].[{schemaName}].[{tableName}]");
                         }
                     }
                 }
