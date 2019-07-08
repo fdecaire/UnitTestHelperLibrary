@@ -191,3 +191,7 @@ public class Department
 var listOfDepartments = UnitTestHelpers.ReadDataFromTable<Department>("department", "Linq2SqlDemoData");
 ```
 The purpose of the ReadDataFromTable method is to provide the capability to check if your method under test inserted or updated data as expected.
+
+Linq2Sql Unit Test Sample:
+https://github.com/fdecaire/SampleLinq2SqlUnitTesting
+
