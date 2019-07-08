@@ -169,4 +169,24 @@ This code should be contained in the [AssemblyInitialize] method inside the Asse
 
 # Custom Queries
 
-You can create queries and save them inside of embedded files.  Each query can be separated by a "GO" just like SQL uses.  Once you provide an embedded file name, you can call the UnitTestHelpers.ExecuteSQLCode method to execute that set of queries.  This can be convenient for creating a fake stored procedure (one that does nothing but ruturn a fake set of data).  Then you run your test against that database and run a cleanup query when the test is done.
+You can create queries and save them inside of embedded files.  Each query can be separated by a "GO" just like SQL uses.  Once you provide an embedded file name, you can call the UnitTestHelpers.ExecuteSQLCodeFromFile method to execute that set of queries.  This can be convenient for creating a fake stored procedure (one that does nothing but ruturn a fake set of data).  Then you run your test against that database and run a cleanup query when the test is done.
+
+You can execute a query string immediately using the following syntax:
+```C#
+UnitTestHelpers.ExecuteSQLQuery("INSERT INTO Department (Name) values ('Accounting')", "Linq2SqlDemoData");
+```
+
+The above code can insert the string value "Accounting" into the Name field of a table called "Department".  The table shown above is contained in a database named "Linq2SqlDemoData".
+
+You can read a list of data from a table by creating a POCO/DTO class that matches the table and use the ReadDataFromTable method:
+```C#
+// sample DTO class
+public class Department
+{
+    public int ID { get; set; }
+    public string Name { get; set; }
+}
+
+// sample code to read data from the department table
+var listOfDepartments = UnitTestHelpers.ReadDataFromTable<Department>("department", "Linq2SqlDemoData");
+```
