@@ -57,6 +57,7 @@
     <Compile Include="ADOReader.cs" />
     <Compile Include="ConstraintDefinition.cs" />
     <Compile Include="DataSetHelpers.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="FieldDefinition.cs" />
     <Compile Include="InsertQueryGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

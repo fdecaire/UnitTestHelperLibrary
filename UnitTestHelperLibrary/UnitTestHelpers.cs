@@ -454,7 +454,7 @@ namespace UnitTestHelperLibrary
 
             using (var db = new ADODatabaseContext("TEST", database))
             {
-                var query = "SELECT COUNT(*) AS total FROM " + tableName;
+                var query = $"SELECT COUNT(*) AS total FROM [{schema}].[{tableName}]";
                 using (var reader = db.ReadQuery(query))
                 {
                     while (reader.Read())
@@ -467,19 +467,45 @@ namespace UnitTestHelperLibrary
 
             return results;
         }
+        /// <summary>
+        /// Read a generic List of your datatype from a table
+        /// </summary>
+        /// <typeparam name="T">Define a POCO of your table results</typeparam>
+        /// <param name="tableName">Table to query</param>
+        /// <param name="database">Database containing table</param>
+        /// <param name="schema">Optional schema</param>
+        /// <returns></returns>
+        public static List<T> ReadDataFromTable<T>(string tableName, string database, string schema = "dbo") where T : new()
+        {
+            // make sure the schema name doesn't already contain a "."
+            schema = schema.Replace(".", "");
+
+            using (var db = new ADODatabaseContext("TEST", database))
+            {
+                var query = $"SELECT * FROM [{schema}].[{tableName}]";
+                var data = db.ReadDataSet(query);
+                var result = data.Tables[0].ToList<T>();
+                return result;
+            }
+        }
 
         /// <summary>
-        /// Execute any query against your SQLLocalDB instance.
+        /// Execute any query stored in a resource file against your SQLLocalDB instance.
         /// </summary>
         /// <param name="filePath">Full namespace path to the embedded resource file</param>
         /// <param name="database"></param>
-        public static void ExecuteSQLCode(string filePath, string database)
+        public static void ExecuteSQLCodeFromFile(string filePath, string database)
         {
             using (var db = new ADODatabaseContext("TEST", database))
             {
                 var assembly = Assembly.GetCallingAssembly();
                 using (var stream = assembly.GetManifestResourceStream(filePath))
                 {
+                    if (stream == null)
+                    {
+                        throw new Exception("Cannot find SQL query file, make sure it is set to Embedded Resource!");
+                    }
+
                     using (var reader = new StreamReader(stream))
                     {
                         var code = reader.ReadToEnd();
@@ -494,6 +520,18 @@ namespace UnitTestHelperLibrary
                         }
                     }
                 }
+            }
+        }
+        /// <summary>
+        /// Execute a raw query string against a test database
+        /// </summary>
+        /// <param name="query">One SQL statement to be executed</param>
+        /// <param name="database">database to execute against</param>
+        public static void ExecuteSQLQuery(string query, string database)
+        {
+            using (var db = new ADODatabaseContext("TEST", database))
+            {
+                db.ExecuteNonQuery(query);
             }
         }
     }

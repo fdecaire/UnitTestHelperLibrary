@@ -2,14 +2,14 @@
 <package >
   <metadata>
     <id>UnitTestHelperLibrary</id>
-    <version>1.1.8.0</version>
+    <version>1.2.0.0</version>
     <title>Unit Test Helper Library</title>
     <authors>Frank DeCaire</authors>
     <owners>Frank DeCaire</owners>
     <projectUrl>https://github.com/fdecaire/UnitTestHelperLibrary</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This package contains a library of objects that can be used to create unit tests based on a SQLLocalDB instance.</description>
-    <releaseNotes>Fixed additional problems with special characters in database name</releaseNotes>
+    <releaseNotes>Added methods to allow SQL statements to be executed directly.  Also added query to read table into POCO list type.</releaseNotes>
     <copyright>Copyright 2019</copyright>
     <tags>Unit Test</tags>
   </metadata>
